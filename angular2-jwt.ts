@@ -104,10 +104,7 @@ export class AuthHttp {
     });
   }
 
-  tokenNotExpired(jwt?:string): boolean {
-
-    const token: string = jwt || this.config.tokenGetter();
-
+  tokenNotExpired(token?:string): boolean {
     const jwtHelper = new JwtHelper();
 
     return token != null && !jwtHelper.isTokenExpired(token);
