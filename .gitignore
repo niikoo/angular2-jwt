@@ -7,8 +7,10 @@ Thumbs.db
 
 *.js
 !karma.conf.js
+!angular2-jwt.js
 *.map
 *.d.ts
+!angular2-jwt.d.ts
 !custom.d.ts
 .idea/
 *.iml
