@@ -104,6 +104,15 @@ export class AuthHttp {
     });
   }
 
+  tokenNotExpired(jwt?:string): boolean {
+
+    const token: string = jwt || this.config.tokenGetter();
+
+    const jwtHelper = new JwtHelper();
+
+    return token != null && !jwtHelper.isTokenExpired(token);
+  }
+
   private mergeOptions(providedOpts: RequestOptionsArgs, defaultOpts?: RequestOptions) {
     let newOptions = defaultOpts || new RequestOptions();
     if (this.config.globalHeaders) {
@@ -124,7 +133,7 @@ export class AuthHttp {
   }
 
   public requestWithToken(req: Request, token: string): Observable<Response> {
-    if (!this.config.noClientCheck && !tokenNotExpired(undefined, token)) {
+    if (!this.config.noClientCheck && !this.tokenNotExpired(token)) {
       if (!this.config.noJwtError) {
         return new Observable<Response>((obs: any) => {
           obs.error(new AuthHttpError('No JWT present or has expired'));
@@ -338,7 +347,7 @@ function toObject(val: any) {
   if (val === null || val === undefined) {
     throw new TypeError('Object.assign cannot be called with null or undefined');
   }
-  
+
   return Object(val);
 }
 
@@ -346,16 +355,16 @@ function objectAssign(target: any, ...source: any[]) {
   let from: any;
   let to = toObject(target);
   let symbols: any;
-  
+
   for (var s = 0; s < source.length; s++) {
     from = Object(source[s]);
-    
+
     for (var key in from) {
       if (hasOwnProperty.call(from, key)) {
         to[key] = from[key];
       }
     }
-    
+
     if ((<any>Object).getOwnPropertySymbols) {
       symbols = (<any>Object).getOwnPropertySymbols(from);
       for (var i = 0; i < symbols.length; i++) {
