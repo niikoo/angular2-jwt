@@ -22,8 +22,10 @@
     }
   },
   "files": [
-    "index.ts",
-    "./src/jwt.interceptor.ts"
+    "index.ts"
+  ],
+  "include": [
+    "./src/*.ts"
   ],
   "exclude": [
     "node_modules",
